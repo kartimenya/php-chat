@@ -1,30 +1,27 @@
 <?php
 
-session_start();
-
 const MASSAGE_FILE = __DIR__ . "/data/messages.json";
 
 require_once 'MessagesStorage.php';
+require_once 'Cookie.php';
+require_once 'Session.php';
 
 $messagesStorage = new MessagesStorage();
+$cooki = new Cookie();
+$session = new Session();
 
-
-$theme = $_COOKIE['theme'] ?? null;
-
-if (!isset($_SESSION['login']) && isset($_POST['user_login'])) {
-    $_SESSION['login'] = $_POST['user_login'];
+if (!$session->has('login') && isset($_POST['user_login'])) {
+    $session->add('login', $_POST['user_login']);
 }
 
 $message = $_POST['user_message']?? null;
-$login = $_SESSION['login'] ?? null;
+$login = $session->get('login');
 
 if ($message && $login) {  
     if ($message === "set_night") {
-       setcookie("theme", "night");
-       $theme = "night";
+       $cooki->add('theme', 'night');
     }else if ($message === "set_light"){
-        setcookie("theme", null, -1);
-        $theme = null;
+        $cooki->delete('theme');
     }else{
        $newMessage = [
         'message' => $message,
@@ -42,12 +39,12 @@ if ($message && $login) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <?php $style = ($theme === 'night') ? 'style-night.css' : 'style.css';?>
+    <?php $style = ($cooki->get('theme') === 'night') ? 'style-night.css' : 'style.css';?>
     <link rel="stylesheet" type="text/css" href="<?php echo($style); ?>">
 </head>
 <body>
     <?php
-        if (isset($_SESSION['login'])) {
+        if ($session->has('login')) {
             foreach ($messagesStorage->getMessages() as $massage) {
                 echo "<div class='message'>";
                 echo "<div class='time'>" . date("d.m.Y H:i", $massage['time']) . "</div>";
