@@ -2,13 +2,11 @@
 
 session_start();
 
-const MASSAGE_FILE = "data/messages.json";
+const MASSAGE_FILE = __DIR__ . "/data/messages.json";
 
 require_once 'MessagesStorage.php';
 
 $messagesStorage = new MessagesStorage();
-
-$messagesArray = $messagesStorage->getMessagesFromFile();
 
 
 $theme = $_COOKIE['theme'] ?? null;
@@ -28,12 +26,12 @@ if ($message && $login) {
         setcookie("theme", null, -1);
         $theme = null;
     }else{
-       $messagesArray[] = [
+       $newMessage = [
         'message' => $message,
         'login' => $login,
         'time' => time()
        ];
-    $messagesStorage->setMessagesToFile($messagesArray);
+    $messagesStorage->addMessage($newMessage);
     }
 }
 
@@ -50,7 +48,7 @@ if ($message && $login) {
 <body>
     <?php
         if (isset($_SESSION['login'])) {
-            foreach ($messagesArray as $massage) {
+            foreach ($messagesStorage->getMessages() as $massage) {
                 echo "<div class='message'>";
                 echo "<div class='time'>" . date("d.m.Y H:i", $massage['time']) . "</div>";
                 echo "<div class='login'>" . htmlspecialchars($massage['login']) . "</div>";
