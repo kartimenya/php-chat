@@ -1,29 +1,27 @@
 <?php
 
 
-class Cookie
+class Cookie extends AbstractServerArray
 {
-	private array $cooki;
 
 	public function __construct(){
-		$this->cookie = $_COOKIE;
+		$this->serverArray = $_COOKIE;
 	}
 
 	public function add($key, $value){
 		setcookie($key, $value);
-		$this->cookie[$key] = $value;
-	}
-
-	public function get($key, $default = null){
-		return $this->cookie[$key] ?? $default;
-	}
-
-	public function has($key){
-		return isset($this->cookie[$key]);
+		parent::add($key, $value);
 	}
 
 	public function delete($key){
 		setcookie($key, null, -1);
-		unset($this->cookie[$key]);
+		parent::delete($key);
+	}
+
+	public function clear(){
+		foreach ($this->serverArray as $key => $value) {
+			$this->delete($key);
+		}
+		
 	}
 }

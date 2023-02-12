@@ -3,6 +3,7 @@
 const MASSAGE_FILE = __DIR__ . "/data/messages.json";
 
 require_once 'MessagesStorage.php';
+require_once 'AbstractServerArray.php';
 require_once 'Cookie.php';
 require_once 'Session.php';
 
@@ -38,7 +39,7 @@ if ($message && $login) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chat</title>
     <?php $style = ($cooki->get('theme') === 'night') ? 'style-night.css' : 'style.css';?>
     <link rel="stylesheet" type="text/css" href="<?php echo($style); ?>">
 </head>
