@@ -1,8 +1,13 @@
 <?php
 
 
-class Cookie extends AbstractServerArray
+class Cookie
 {
+	use ServerArrayAccessTrait;
+	use MutableServerArrayTrait {
+		add as private traitAdd;
+		delete as private traitDelete;
+	}
 
 	public function __construct(){
 		$this->serverArray = $_COOKIE;
@@ -10,12 +15,12 @@ class Cookie extends AbstractServerArray
 
 	public function add($key, $value){
 		setcookie($key, $value);
-		parent::add($key, $value);
+		$this->traitAdd($key, $value);
 	}
 
 	public function delete($key){
 		setcookie($key, null, -1);
-		parent::delete($key);
+		$this->traitDelete($key);
 	}
 
 	public function clear(){

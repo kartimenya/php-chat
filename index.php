@@ -3,19 +3,22 @@
 const MASSAGE_FILE = __DIR__ . "/data/messages.json";
 
 require_once 'MessagesStorage.php';
-require_once 'AbstractServerArray.php';
+require_once 'ServerArrayAccessTrait.php';
+require_once 'MutableServerArrayTrait.php';
 require_once 'Cookie.php';
 require_once 'Session.php';
+require_once 'Post.php';
 
 $messagesStorage = new MessagesStorage();
 $cooki = new Cookie();
 $session = new Session();
+$post = new Post();
 
-if (!$session->has('login') && isset($_POST['user_login'])) {
-    $session->add('login', $_POST['user_login']);
+if (!$session->has('login') && $post->has('user_login')) {
+    $session->add('login', $post->get('user_login'));
 }
 
-$message = $_POST['user_message']?? null;
+$message = $post->get('user_message');
 $login = $session->get('login');
 
 if ($message && $login) {  
