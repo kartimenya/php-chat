@@ -1,5 +1,7 @@
 <?php
 
+namespace Chat\Core;
+
 class Post {
 	use ServerArrayAccessTrait;
 

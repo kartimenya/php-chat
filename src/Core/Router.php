@@ -1,5 +1,10 @@
 <?php
 
+namespace Chat\Core;
+use Chat\Controller\ChatController;
+use Chat\Controller\loginController;
+
+
 class Router
 {
 

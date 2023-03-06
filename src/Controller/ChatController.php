@@ -1,5 +1,12 @@
 <?php
 
+namespace Chat\Controller;
+use Chat\Core\MessagesStorage;
+use Chat\Core\Cookie;
+use Chat\Core\Session;
+use Chat\Core\Post;
+use Chat\Core\View;
+
 class ChatController
 {
 	public function mainAction(){

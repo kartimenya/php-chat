@@ -1,5 +1,11 @@
 <?php
 
+namespace Chat\Controller;
+use Chat\Core\Session;
+use Chat\Core\Post;
+use Chat\Core\View;
+use Chat\Core\Cookie;
+
 class LoginController
 {
 	public function mainAction(){
